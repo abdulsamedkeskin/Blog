@@ -3,7 +3,7 @@ from flask_mongoengine import MongoEngine
 from api.models import Blog, User
 import os
 from flask_cors import CORS, cross_origin
-from middleware.middleware import add_auth, api_auth
+from middleware.middleware import add_auth, api_auth, random_auth
 from flask_bcrypt import Bcrypt
 
 app = Flask(__name__)
@@ -27,6 +27,14 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 @app.route('/new', methods=["POST"])
 @add_auth()
 def add():
+    try:
+        print("")
+    except Exception as e:
+        return {"Bad Request": str(e)},500
+
+@app.route("/api/random", methods=['GET'])
+@random_auth()
+def random_data():
     try:
         print("")
     except Exception as e:

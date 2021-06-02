@@ -34,7 +34,7 @@ export default function Header(props) {
   return (
     <React.Fragment>
       <Toolbar className={classes.toolbar}>
-        <Button size="small">Home Page</Button>
+        <Button size="small" onClick={() => window.location.replace("/")} >Home Page</Button>
         <Typography
           component="h2"
           variant="h5"

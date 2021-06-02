@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Grid from "@material-ui/core/Grid";
@@ -21,26 +21,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const sections = [
-  { title: "Technology", url: "technology" },
-  { title: "Design", url: "design" },
-  { title: "Culture", url: "culture" },
-  { title: "Business", url: "business" },
-  { title: "Politics", url: "politics" },
-  { title: "Opinion", url: "opinion" },
-  { title: "Science", url: "science" },
-  { title: "Health", url: "health" },
-  { title: "Style", url: "style" },
-  { title: "Travel", url: "travel" },
+  { title: "Teknoloji", url: "technology" },
+  { title: "Dizayn", url: "design" },
+  { title: "Kültür", url: "culture" },
+  { title: "İş", url: "business" },
+  { title: "Politika", url: "politics" },
+  { title: "Seçenek", url: "opinion" },
+  { title: "Bilim", url: "science" },
+  { title: "Sağlık", url: "health" },
+  { title: "Stil", url: "style" },
+  { title: "Seyehat", url: "travel" },
 ];
-
-const mainFeaturedPost = {
-  title: "Title",
-  description: "description",
-  image: "imageUrl",
-  imgText: "img text",
-  linkText: "link",
-};
-
 
 const featuredPosts = [
   {
@@ -62,7 +53,6 @@ const featuredPosts = [
     link: "/test-asd",
   },
 ];
-
 
 const sidebar = {
   title: "SideBar",
@@ -90,8 +80,17 @@ const sidebar = {
 export default function Blog() {
   const classes = useStyles();
 
+  const [data, setData] = useState();
+  const mainFeaturedPost = { data };
+
   useEffect(() => {
-    // axios.get("http://localhost:5000");
+    axios
+      .get("http://localhost:5000/api/random", {
+        headers: {
+          "x-access-token": JSON.parse(localStorage.getItem("user"))?.accessToken,
+        },
+      })
+      .then((res) => setData(res.data));
   }, []);
   return (
     <React.Fragment>
@@ -106,7 +105,7 @@ export default function Blog() {
             ))}
           </Grid>
           <Grid container spacing={5} className={classes.mainGrid}>
-            <Main title="Test"/>
+            <Main title="Test" />
             <Sidebar
               title={sidebar.title}
               description={sidebar.description}

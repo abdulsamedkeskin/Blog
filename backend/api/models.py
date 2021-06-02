@@ -1,3 +1,4 @@
+from flask.globals import request
 import mongoengine as db
 from flask import jsonify
 import datetime
@@ -35,6 +36,7 @@ class Blog(db.Document):
     def to_json(self):
         return {
             "_id": str(self.pk),
+            "url": f"http://localhost:3000/blog/{str(self.pk)}",
             "title": self.title,
             "date": self.date,
             "author": self.author,

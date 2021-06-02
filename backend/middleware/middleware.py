@@ -1,9 +1,30 @@
-from flask import request, Response
+from flask import request, Response, jsonify
 import jwt
 from functools import wraps
 from api.models import Blog
 from werkzeug.utils import secure_filename
 import uuid, os
+
+
+def random_auth():
+    def _random_auth(f):
+        @wraps(f)
+        def __random_auth():
+            try:
+                token = request.headers['x-access-token']
+            except:
+                return {"Bad Request": "No token provided."},401
+            id = request.path.split('/')[-1]
+            try:
+                jwt.decode(token, "+\x83\xb3\x84\xd6L\x95\x7f\\\xd9\x01\x8d$A\xdc\xb74\xbb\x16\xd0+\xd8\xb4\x1b",
+                           algorithms='HS256')
+                return jsonify(Blog.objects())
+            except Exception as e:
+                return {"Bad Request": str(e)},500
+            return f()
+        return __random_auth
+    return _random_auth
+
 
 
 def api_auth():

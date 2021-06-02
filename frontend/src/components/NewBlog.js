@@ -63,10 +63,12 @@ export default function NewBlog() {
     axios
       .post("http://localhost:5000/new", formData, config)
       .then((res) => {
-        toast?.current?.show({
+        console.log(res)
+        toast?.current?.show({  
           severity: "info",
-          summary: "Success",
-          detail: "Blog Yayınlandı",
+          summary: "Blog Yayınlandı",
+          detail: "Url: " + res?.data?.url,
+          sticky: true
         });
         setPopUp(false);
       })
