@@ -21,6 +21,22 @@ class QuerySet(db.QuerySet):
             "content": value.content,
         }
         return data
+    def to_json(self):
+        data = []
+        for i in range(len(list(self))):
+            value = list(self)[i]
+            data.append({
+                "_id": str(value.pk),
+                "title": value.title,
+                "url": f"http://localhost:3000/blog/{str(value.pk)}",
+                "author": value.author,
+                "date": value.date,
+                "tags": value.tags,
+                "description": value.description,
+                "thumbnail": value.thumbnail,
+                "content": value.content,
+            })
+        return data
 
 
 class Blog(db.Document):
@@ -31,7 +47,7 @@ class Blog(db.Document):
     description = db.StringField(required=True)
     tags = db.ListField()
     thumbnail = db.StringField(required=True)
-    meta = {'   collection': 'Blog', 'queryset_class': QuerySet}
+    meta = {'   collection': 'Blog', 'queryset_class': QuerySet, 'strict': False}
 
     def to_json(self):
         return {

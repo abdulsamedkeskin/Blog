@@ -55,8 +55,6 @@ const featuredPosts = [
 ];
 
 const sidebar = {
-  title: "SideBar",
-  description: "description",
   archives: [
     { title: "March 2020", url: "march/2020" },
     { title: "February 2020", url: "february/2020" },
@@ -80,17 +78,21 @@ const sidebar = {
 export default function Blog() {
   const classes = useStyles();
 
-  const [data, setData] = useState();
-  const mainFeaturedPost = { data };
+  const [ mainFeaturedPost, setMainFeaturedPost] = useState()
+  const [featuredPosts, setFeaturedPosts] = useState();
 
   useEffect(() => {
     axios
       .get("http://localhost:5000/api/random", {
         headers: {
-          "x-access-token": JSON.parse(localStorage.getItem("user"))?.accessToken,
+          "x-access-token": JSON.parse(localStorage.getItem("user"))
+            ?.accessToken,
         },
       })
-      .then((res) => setData(res.data));
+      .then((res) => {
+        setMainFeaturedPost(res.data[0])
+        setFeaturedPosts([res.data[1],res.data[2]]);
+      });
   }, []);
   return (
     <React.Fragment>
@@ -100,15 +102,13 @@ export default function Blog() {
         <main>
           <MainFeaturedPost post={mainFeaturedPost} />
           <Grid container spacing={4}>
-            {featuredPosts.map((post) => (
+            {featuredPosts?.map((post) => (
               <FeaturedPost key={post.title} post={post} />
             ))}
           </Grid>
           <Grid container spacing={5} className={classes.mainGrid}>
-            <Main title="Test" />
+            <Main title="Son Blog" />
             <Sidebar
-              title={sidebar.title}
-              description={sidebar.description}
               archives={sidebar.archives}
               social={sidebar.social}
             />

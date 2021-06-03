@@ -1,9 +1,8 @@
 from flask import request, Response, jsonify
-import jwt
 from functools import wraps
 from api.models import Blog
 from werkzeug.utils import secure_filename
-import uuid, os
+import uuid, os, json, random, jwt
 
 
 def random_auth():
@@ -14,14 +13,16 @@ def random_auth():
                 token = request.headers['x-access-token']
             except:
                 return {"Bad Request": "No token provided."},401
-            id = request.path.split('/')[-1]
             try:
                 jwt.decode(token, "+\x83\xb3\x84\xd6L\x95\x7f\\\xd9\x01\x8d$A\xdc\xb74\xbb\x16\xd0+\xd8\xb4\x1b",
-                           algorithms='HS256')
-                return jsonify(Blog.objects())
+                            algorithms='HS256')
+                # data = json.loads(jsonify(Blog.objects()).get_data(as_text=False))
+                data = Blog.objects.to_json()
+                random_number = random.sample(range(0,len(data)),3)
+                    
+                return jsonify([data[random_number[0]], data[random_number[1]],data[random_number[2]]])
             except Exception as e:
                 return {"Bad Request": str(e)},500
-            return f()
         return __random_auth
     return _random_auth
 
@@ -47,26 +48,6 @@ def api_auth():
         return __auth
 
     return _auth
-
-
-def api_all_auth():
-    def _api_all_auth(f):
-        @wraps(f)
-        def __api_all_auth():
-            try:
-                token = request.headers['x-access-token']
-            except:
-                return {"Bad Request": "No token provided."},401
-            try:
-                    jwt.decode(token, "+\x83\xb3\x84\xd6L\x95\x7f\\\xd9\x01\x8d$A\xdc\xb74\xbb\x16\xd0+\xd8\xb4\x1b",
-                               algorithms='HS256')
-                    return Blog.objects()
-            except Exception as e:
-                return {"Bad Request": str(e)},500
-            return f(args, **kwargs)
-        return __api_all_auth()
-    return _api_all_auth()
-
 
 def add_auth():
     def _add_auth(f):
