@@ -1,0 +1,6 @@
+/backend/venv
+/frontend/node_modules
+/backend/uploads
+# /backend/api/__pycache__
+# /backend/middleware/__pycache__
+# /backend/__pycache__

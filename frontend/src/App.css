@@ -1,0 +1,23 @@
+html,
+#root,
+body {
+  width: 100vw;
+  margin: 0;
+  height: 100vh;
+}
+
+.App {
+  width: 50%;
+  margin: 0 auto;
+}
+
+.send-button {
+  position: fixed !important;
+  right: 10px;
+  bottom: 10px;
+}
+
+.p-fileupload-choose {
+  background-color: rgba(0, 0, 0, 0.44) !important;
+  border-color: rgba(0, 0, 0, 0.04) !important;
+}
